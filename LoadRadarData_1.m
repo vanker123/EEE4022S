@@ -29,10 +29,10 @@ WindowLength = 64;
 OverlapFactor=0.5;
 overlap=0.5*WindowLength;
 
-subsetProfiles= HRRProfiles(1:561,:);      %results not too clear
+%subsetProfiles= HRRProfiles(1:561,:);      %results not too clear
 %subsetProfiles= HRRProfiles(561:1122,:);   %results not good 
 %subsetProfiles= HRRProfiles(1122:1683,:);  %results not good 
-%subsetProfiles= HRRProfiles(1683:2244,:);   %a few good results
+subsetProfiles= HRRProfiles(1683:2244,:);   %a few good results
 %subsetProfiles= HRRProfiles(2244:2805,:);  %very bad results
 
 y_length=size(subsetProfiles,1);
@@ -50,10 +50,10 @@ for f = 1:NumberofFrames-1
 
     [IsarImage Plot_ISAR]=calculate_autofocus(aligned_profiles,1:size(subset,1),(-WindowLength/2:1:(WindowLength/2-1))*EffectivePRF/WindowLength);
     
-    %Contrast_Value=calculate_contrast(Plot_ISAR);
-    %Entropy_Value=Entropy_of_ISARimage(Plot_ISAR);
-    %contrast(f)=Contrast_Value;
-    %entropy(f)=Entropy_Value;
+    Contrast_Value=calculate_contrast(Plot_ISAR);
+    Entropy_Value=Entropy_of_ISARimage(Plot_ISAR);
+    contrast(f)=Contrast_Value;
+    entropy(f)=Entropy_Value;
     
     
 end 
