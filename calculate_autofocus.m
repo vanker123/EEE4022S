@@ -10,8 +10,8 @@ number_of_columns=size(Aligned_HRR_profiles,2);
 var_rangebins = var(Shifted_profile,1);
 %figure;
 %plot(var_rangebins)
-%xlabel('Range(m)','fontsize',14)
-%ylabel('Amplitude variance','fontsize',14)
+%xlabel('Range(m)','fontsize',15)
+%ylabel('Amplitude variance','fontsize',15)
 set(gcf,'color','w')
 
 sum_profile= sum(Shifted_profile.^2,1);
@@ -32,13 +32,13 @@ end
 %hold on
 %yline(mean_sum_profile);
 %hold off
-%xlabel('Range(m)','fontsize',14)
-%ylabel('Amplitude power','fontsize',14)
+%xlabel('Range(m)','fontsize',15)
+%ylabel('Amplitude power','fontsize',15)
 %set(gcf,'color','w')
 
 variance_no_noise_no_zeros=nonzeros(variance_no_noise);
 
-if isempty(variance_no_noise_no_zeros)
+if isempty(variance_no_noise_no_zeros) %looks to see if range bins satisfy dominant scatterer criteria
     IsarImage=zeros(number_of_rows,number_of_columns);
     figure;
     Plot_IsarImage=imagesc(xAxis,yAxis,IsarImage);
@@ -57,13 +57,13 @@ else
 
     phase_aligned= angle(Aligned_HRR_profiles(:,pos_min_variance));
     %figure;
-    %plot(phase_aligned);
+    %plot(phase_aligned); %plot phase history of range profile satisfying dominant scatter criteria
     %set(gcf,'color','w')
-    %xlabel('Range(m)','fontsize',14)
-    %ylabel('Phase history','fontsize',14)
+    %xlabel('Range(m)','fontsize',15)
+    %ylabel('Phase history','fontsize',15)
     
     DS_CC= exp(-1i*phase_aligned);
-    phaseComp_Matrix= repmat(DS_CC,1,number_of_columns);
+    phaseComp_Matrix= repmat(DS_CC,1,number_of_columns); %deriving phase compensation matrix
 
     phase_Shift=Aligned_HRR_profiles.*phaseComp_Matrix;
     window_vector= hamming(number_of_rows);
@@ -71,9 +71,9 @@ else
     IsarImage=fftshift(fft(phase_Shift.*w,[],1),1);
 
     figure;
-    Plot_IsarImage=imagesc(xAxis,yAxis,20*log10(abs(IsarImage)));
-    ylabel('Doppler frequency (Hz)','fontsize',14)
-    xlabel('Range(m)','fontsize',14)
+    Plot_IsarImage=imagesc(xAxis,yAxis,20*log10(abs(IsarImage))); %plot final ISAR image
+    ylabel('Doppler frequency (Hz)','fontsize',15)
+    xlabel('Range(m)','fontsize',15)
     axis xy;
     colormap('jet');
     colorbar
