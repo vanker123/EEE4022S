@@ -14,12 +14,12 @@ RangeResolution = 3e8/(2*Bandwidth);
 % Plot the HRR profiles 
 RangeAxis_m = (0:1:(NumRangeBins-1))*RangeResolution;
 ProfilesAxis = 1:1:NumProfiles;
-figure; imagesc(RangeAxis_m,ProfilesAxis, 20*log10(abs(HRRProfiles)));
+figure; imagesc(RangeAxis_m,ProfilesAxis, 20*log10(abs(HRRProfiles))); %plotting unaligned HRR profiles
 set(gca,'FontSize',14)
 set(gcf,'color','w')
-ylabel('Profile Number','fontsize',14);
-xlabel('Range (m)','fontsize',14);
-title('HRR profiles','fontsize',14);
+ylabel('Profile Number','fontsize',15);
+xlabel('Range (m)','fontsize',15);
+title('HRR profiles','fontsize',15);
 colormap('jet');
 colorbar;
 
@@ -29,6 +29,7 @@ WindowLength = 64;
 OverlapFactor=0.5;
 overlap=0.5*WindowLength;
 
+%subsets of data 
 %subsetProfiles= HRRProfiles(1:561,:);      %results not too clear
 %subsetProfiles= HRRProfiles(561:1122,:);   %results not good 
 %subsetProfiles= HRRProfiles(1122:1683,:);  %results not good 
@@ -48,14 +49,13 @@ for f = 1:NumberofFrames-1
     subset= subsetProfiles(StartIdx:StopIdx,:);
     aligned_profiles= aligned_range(subset);
 
+    %plotting ISAR image of subset of data
     [IsarImage Plot_ISAR]=calculate_autofocus(aligned_profiles,1:size(subset,1),(-WindowLength/2:1:(WindowLength/2-1))*EffectivePRF/WindowLength);
     
     Contrast_Value=calculate_contrast(Plot_ISAR);
     Entropy_Value=Entropy_of_ISARimage(Plot_ISAR);
-    contrast(f)=Contrast_Value;
-    entropy(f)=Entropy_Value;
+    contrast(f)=Contrast_Value; %Array of image contrast values of ISAR images of subset
+    entropy(f)=Entropy_Value; %Array of entropy values of ISAR images of subset
     
     
 end 
-%maxc=find(contrast==max(contrast));
-%mine=find(entropy==min(entropy));
